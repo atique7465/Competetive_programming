@@ -1,0 +1,107 @@
+#include<bits/stdc++.h>
+using namespace std;
+int arr[100010];
+int arr2[100010];
+vector<int>v;
+int main()
+{
+    arr[0]=-50;
+    arr2[0]=0;
+    int i=1,c=0,ck=0,m;
+    while(scanf("%d",&arr[i])!=EOF)
+    {
+        if(arr[i]!=-1)
+        {
+            c++;
+            arr2[i]=i;
+        }
+        if(arr[i]==-1)
+        {
+            if(c%2==0)
+            {
+                m=(c/2)+ck;
+                if(arr[m]==-50)
+                {
+                    if(arr[m-1]!=-50)
+                    {
+                        v.push_back(arr[m-1]);
+                        arr[m-1]=-50;
+                        arr2[m-1]=arr2[m-2];
+                    }
+                    else
+                    {
+                        int l=arr2[m];
+                        while(l>=0)
+                        {
+                            if(arr[l]!=-50)
+                            {
+                                v.push_back(arr[l]);
+                                arr[l]=-50;
+                                arr2[l]=arr2[l-1];
+                                break;
+                            }
+                            l=arr2[l];
+                        }
+                    }
+                }
+                else
+                {
+                    v.push_back(arr[m]);
+                    arr[m]=-50;
+                    arr2[m]=arr2[m-1];
+                }
+            c--;
+            }
+            else
+            {
+                m=(c/2)+1+ck;
+                if(arr[m]==-50)
+                {
+                    if(arr[m-1]!=-50)
+                    {
+                        v.push_back(arr[m-1]);
+                        arr[m-1]=-50;
+                        arr2[m-1]=arr2[m-2];
+                    }
+                    else
+                    {
+                        int l=arr2[m];
+                        while(l>=0)
+                        {
+                            if(arr[l]!=-50)
+                            {
+                                v.push_back(arr[l]);
+                                arr[l]=-50;
+                                arr2[l]=arr2[l-1];
+                                break;
+                            }
+                            l=arr2[l];
+                        }
+                    }
+                }
+                else
+                {
+                    v.push_back(arr[m]);
+                    arr[m]=-50;
+                    arr2[m]=arr2[m-1];
+                }
+                c--;
+            }
+            ck++;
+        }
+        if(arr[i]==0)
+        {
+            for(int t=0; t<v.size(); t++)
+                cout<<v[t]<<endl;
+            cout<<endl;
+            v.clear();
+            i=0;
+            c=0;
+            ck=0;
+        }
+        if(arr[i]!=-1){
+            i++;
+        }
+    }
+    return 0;
+}
