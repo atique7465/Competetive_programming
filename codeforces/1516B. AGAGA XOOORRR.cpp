@@ -16,27 +16,24 @@ int main() {
             xorVal = arr[i] ^ xorVal;
         }
 
-        if (xorVal == 0L) {
+        ll sum = 0L;
+        ll cnt = 0L;
+        ll i = 1;
+        while (i <= n) {
+            sum ^= arr[i];
+            if (sum == xorVal) {
+                sum = 0L;
+                cnt++;
+            }
+            i++;
+        }
+
+        if (cnt > 1) {
             cout << "YES" << endl;
         } else {
-            ll sum = 0L;
-            ll cnt = 0L;
-            ll i = 1;
-            while (i <= n) {
-                sum ^= arr[i];
-                if (sum == xorVal) {
-                    sum = 0L;
-                    cnt++;
-                }
-                i++;
-            }
-
-            if (sum == 0L and cnt > 1) {
-                cout << "YES" << endl;
-            } else {
-                cout << "NO" << endl;
-            }
+            cout << "NO" << endl;
         }
+
     }
 
     return 0;
