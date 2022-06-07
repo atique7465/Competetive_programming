@@ -3,53 +3,31 @@
 #define ll long long int
 using namespace std;
 
-vector<ll> prims{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101,
-                 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199,
-                 211, 223, 227};
-ll t, glMxFact, glMaxPower;
+vector<ll> primes;
+ll t, primesLn;
 
-void resolveMxPowAndFactor(ll n) {
-    ll maxPowerFactor, maxPower = 0;
-    for (ll i = 0; i < 30; i++) {
-        ll currPower = 0;
-        if (n % prims[i] == 0) {
-            while (n % prims[i] == 0) {
-                n /= prims[i];
-                currPower++;
-            }
-        }
-        if (currPower > maxPower) {
-            maxPower = currPower;
-            maxPowerFactor = prims[i];
-        }
+vector<ll> getPrime() {
+    bool vis[10005];
+    memset(vis, false, sizeof(vis));
+    ll n = 10005;
+    vector<ll> pr;
+
+    for (ll i = 2; i < n; i++) {
+        if (vis[i])
+            continue;
+        pr.push_back(i);
+        for (ll j = 2 * i; j < n; j += i)
+            vis[j] = true;
     }
 
-    if (n > 1) {
-        if (1 > maxPower) {
-            maxPower = 1;
-            maxPowerFactor = n;
-        }
-    }
-
-    glMaxPower = maxPower;
-    glMxFact = maxPowerFactor;
+    return pr;
 }
-
-ll big_pow(ll x, ll y) {
-    ll ans;
-    ans = 1;
-    while (y > 0) {
-        if (y & 1) {
-            ans = (ans * x);
-        }
-        x = (x * x);
-        y = y >> 1;
-    }
-    return ans;
-}
-
 
 int main() {
+
+    primes = getPrime();
+    primesLn = primes.size();
+
     cin >> t;
 
     while (t--) {
@@ -60,15 +38,39 @@ int main() {
             cout << n / 2 << " " << n / 2 << endl;
         } else {
 
-            resolveMxPowAndFactor(n);
+            ll a = INT_MIN, b = INT_MAX;
+            ll currN = n;
+            for (ll i = 0; i < primesLn && currN > 1; i++) {
+                if (currN % primes[i] == 0) {
+                    ll currPower = 0;
+                    ll currValue = 1;
+                    while (currN % primes[i] == 0) {
+                        currN /= primes[i];
+                        currPower++;
+                        currValue *= primes[i];
+                    }
 
-            ll rest = n / big_pow(glMxFact, glMaxPower);
-            ll a = rest * (glMaxPower == 1 ? 1 : big_pow(glMxFact, glMaxPower - (glMaxPower / 2)));
+                    ll rest = n / currValue;
+                    ll currA = rest * (currValue / primes[i]);
 
-            if (a == n) {
-                cout << -1 << endl;
+                    if (currA != n && (abs(currA - (n - currA)) < abs(a - b))) {
+                        a = min(currA, n - currA), b = max(currA, n - currA);
+                    }
+                }
+            }
+
+            if (currN > 1) {
+                ll currA = n / currN;
+
+                if (currA != n && (abs(currA - (n - currA)) < abs(a - b))) {
+                    a = min(currA, n - currA), b = max(currA, n - currA);
+                }
+            }
+
+            if (a != INT_MIN) {
+                cout << a << " " << b << endl;
             } else {
-                cout << min(a, n - a) << " " << max(a, n - a) << endl;
+                cout << -1 << endl;
             }
         }
     }
@@ -77,3 +79,9 @@ int main() {
 }
 
 
+//2268945
+//756315 1512630
+//84230491
+//269107 83961384
+//1927
+//47 1880
