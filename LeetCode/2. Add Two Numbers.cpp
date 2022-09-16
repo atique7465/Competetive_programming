@@ -27,38 +27,21 @@ class Solution {
 public:
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
 
-        ListNode *resultHead = NULL;
+        ListNode *resultHead = new ListNode(0);
         ListNode *resultCurr = resultHead;
         int carry = 0;
-        while(l1 != NULL || l2 != NULL) {
+        while(l1 != NULL || l2 != NULL || carry != 0) {
 
             int s = (l1 != NULL ? l1->val : 0) + (l2 != NULL ? l2->val : 0) + carry;
-            carry = 0;
+            carry = s / 10;
 
-            int val = s % 10;
-            carry = s >= 10 ? 1 : 0;
+            resultCurr->next = new ListNode(s % 10);
+            resultCurr = resultCurr->next;
 
-            ListNode *newNode = new ListNode(val);
-            if(resultCurr == NULL){
-                resultHead = resultCurr = newNode;
-            }else{
-                resultCurr->next = newNode;
-                resultCurr = newNode;
-            }
-
-            if(l1 != NULL){
-                l1 = l1->next;
-            }
-
-            if(l2 != NULL){
-                l2 = l2->next;
-            }
+            l1 = l1 != NULL ? l1->next : NULL;
+            l2 = l2 != NULL ? l2->next : NULL;
         }
 
-        if(carry > 0){
-            resultCurr->next = new ListNode(carry);
-        }
-
-        return resultHead;
+        return resultHead->next;
     }
 };
