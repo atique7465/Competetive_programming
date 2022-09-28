@@ -17,32 +17,28 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-class Solution_Length_Calc {
+class Solution_2_pointer_faster {
 public:
-    ListNode *removeNthFromEnd(ListNode *head, int n) {
-        int size = 0;
-        ListNode *curr = head;
-        while (curr != nullptr) {
-            curr = curr->next;
-            size++;
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+
+        ListNode* fast = head;
+        ListNode* prev = head;
+        ListNode* slow = head;
+
+        for(int i = 1; i < n; i++){
+            fast = fast->next;
         }
 
-        int pos = 0;
-        curr = head;
-        ListNode *prev = head;
-        while (curr != nullptr) {
-            pos++;
-            if (pos == size - n + 1) {
-                break;
-            }
-            prev = curr;
-            curr = curr->next;
+        while(fast->next){
+            fast = fast->next;
+            prev = slow;
+            slow = slow->next;
         }
 
-        if (curr == head) {
-            head = curr->next;
-        } else {
-            prev->next = curr->next;
+        if(slow == head){
+            return head->next;
+        }else{
+            prev->next  = slow->next;
         }
 
         return head;
@@ -72,6 +68,38 @@ public:
             head = head->next;
         }else{
             prev->next = del->next;
+        }
+
+        return head;
+    }
+};
+
+class Solution_Length_Calc {
+public:
+    ListNode *removeNthFromEnd(ListNode *head, int n) {
+        int size = 0;
+        ListNode *curr = head;
+        while (curr != nullptr) {
+            curr = curr->next;
+            size++;
+        }
+
+        int pos = 0;
+        curr = head;
+        ListNode *prev = head;
+        while (curr != nullptr) {
+            pos++;
+            if (pos == size - n + 1) {
+                break;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+
+        if (curr == head) {
+            head = curr->next;
+        } else {
+            prev->next = curr->next;
         }
 
         return head;
