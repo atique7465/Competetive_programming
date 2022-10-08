@@ -1,4 +1,4 @@
 # Competetive_programming
 
 Resources:
-http://andrew-algorithm.blogspot.com/
+01. https://cp-algorithms.com/
