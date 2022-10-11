@@ -2,6 +2,62 @@
 
 using namespace std;
 
+/**
+ *  sweep-line algorithm from Solution section
+ */
+class MyCalendarThree {
+
+    map<int, int> eventMap;
+
+public:
+    MyCalendarThree() {
+    }
+
+    int book(int start, int end) {
+        eventMap[start]++;
+        eventMap[end]--;
+        int curr = 0, res = 0;
+        for (auto const &[k, v]: eventMap) {
+            curr += v;
+            res = max(res, curr);
+        }
+
+        return res;
+    }
+};
+
+/**
+ * Unordered Map for lazy & max
+ */
+class MyCalendarThree_SegmentTree_02 {
+
+private:
+    unordered_map<int, int> lazy;
+    unordered_map<int, int> maxBook;
+
+public:
+    MyCalendarThree_SegmentTree_02() {
+    }
+
+    int book(int start, int end) {
+        update(start, end - 1, 1, 1000000000, 1);
+        return maxBook[1];
+    }
+
+    void update(int start, int end, int left, int right, int index) {
+        if (start > right || end < left) return;
+        if (left >= start && right <= end) {
+            lazy[index]++;
+            maxBook[index]++;
+        } else {
+            int mid = (left + right) / 2;
+            update(start, end, left, mid, 2 * index);
+            update(start, end, mid + 1, right, 2 * index + 1);
+            maxBook[index] = lazy[index] + max(maxBook[2 * index], maxBook[2 * index + 1]);
+        }
+    }
+};
+
 class Node {
 public:
     Node *left = nullptr;
@@ -78,13 +134,16 @@ public:
     }
 };
 
-class MyCalendarThree {
+/**
+ * Segment Tree using linked list
+ */
+class MyCalendarThree_SegmentTree_01 {
 
 private:
     SegmentTree *st;
 
 public:
-    MyCalendarThree() {
+    MyCalendarThree_SegmentTree_01() {
         st = new SegmentTree(1000000000);
     }
 
