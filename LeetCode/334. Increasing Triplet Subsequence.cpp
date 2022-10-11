@@ -2,7 +2,32 @@
 
 using namespace std;
 
-class Solution {
+/**
+ * Maintain two bigger number as small & big, update them on demand, as soon as we found a value bigger than both of them return true. <br>
+ * false otherwise <br>
+ * T -> O(n)
+ */
+class Solution_From_Discuss {
+public:
+    bool increasingTriplet(vector<int> &nums) {
+
+        int small = INT_MAX, big = INT_MAX;
+
+        for (int n: nums) {
+            if (n <= small) small = n;
+            else if (n <= big) big = n;
+            else return true;
+        }
+
+        return false;
+    }
+};
+
+/**
+ * If we found a position j where there exist a smaller and bigger value in its left & right we can return true. <br>
+ * Track the position in range of [start+1, end-1]
+ */
+class Solution_Mine {
 public:
     bool increasingTriplet(vector<int> &nums) {
         int len = nums.size();
