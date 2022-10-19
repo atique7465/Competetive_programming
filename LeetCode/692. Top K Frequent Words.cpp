@@ -29,11 +29,7 @@ public:
     static bool compare(pair<string, int> p1, pair<string, int> p2) {
         if (p1.second != p2.second) {
             return p1.second > p2.second;
-        } else if (p1.first.compare(0, p2.first.size(), p2.first) == 0 ||
-                   p2.first.compare(0, p1.first.size(), p1.first) == 0) {
-            return p1.first.size() < p2.first.size();
         } else
             return p1.first < p2.first;
     }
-
 };
