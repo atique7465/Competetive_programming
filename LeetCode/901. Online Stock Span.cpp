@@ -12,9 +12,25 @@ public:
         } 
         
         int i = mp[nums[nums.size()-2]] - 1;
-        while(i >= 0 && nums[i] <= price) i--;
+        while(i >= 0 && nums[i] <= price) i = mp[nums[i]] - 1;
         mp[price] = i + 1;
         return nums.size() - 1 - i;
+    }
+};
+
+
+class StockSpanner_Stack {
+public:
+    stack<pair<int,int>> stack;
+    int next(int price) {
+        int ans = 1;
+        while (!stack.empty() && stack.top().first <= price) {
+            ans += stack.top().second;
+            stack.pop();
+        }
+        
+        stack.push({price, ans});
+        return ans;
     }
 };
 
