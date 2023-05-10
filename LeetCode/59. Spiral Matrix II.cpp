@@ -1,3 +1,32 @@
+class Solution_02 {
+    int r, c, cnt = 1;
+    vector<vector<int>> dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        r = n; c = n;
+        vector<vector<int>> res(n, vector<int>(n, 0)); 
+        solve(0, 0, 0, n, res);
+        return res;
+    }
+    
+    void solve(int i, int j, int d, int n, vector<vector<int>>& matrix){
+        matrix[i][j] = cnt++;
+
+        if(cnt > n*n) return;
+
+        int ti = getMod(i + dir[d][0], n); int tj = getMod(j + dir[d][1], n);
+        if(matrix[ti][tj] != 0) d = (d + 1) % 4;
+
+        i += dir[d][0]; j += dir[d][1];
+        solve(i, j, d, n, matrix);
+    }
+
+    int getMod(int x, int mod){
+        return (x + mod) % mod;
+    }
+};
+
+
 class Solution {
     int r, c, cnt = 1;
     vector<vector<int>> res;
